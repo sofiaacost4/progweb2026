@@ -9,7 +9,7 @@ class ProdutoAdmin(admin.ModelAdmin):
     list_display = ('Produto', 'destaque', 'promocao', 'msgPromocao', 'preco', 'categoria',)
     empty_value_display = 'Vazio'
     search_fields = ('Produto',)
-    fields = ('Produto', 'destaque', 'promocao', 'msgPromocao', 'preco', 'categoria',)
+    #fields = ('Produto', 'destaque', 'promocao', 'msgPromocao', 'preco', 'categoria',)
 
 admin.site.register(Fabricante, FabricanteAdmin)
 admin.site.register(Categoria)

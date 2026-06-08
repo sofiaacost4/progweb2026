@@ -12,6 +12,32 @@ def edit_produto_view(request, id=None):
     context = { 'produto': produto }
     return render(request, template_name='produto/produto-edit.html', context=context, status=200)
 
+def edit_produto_postback(request, id=None):
+    if request.method == 'POST':
+        id = request.POST.get("id")
+        produto = request.POST.get("Produto")
+        destaque = request.POST.get("destaque")
+        promocao = request.POST.get("promocao")
+        msgPromocao = request.POST.get("msgPromocao")
+        print("postback")
+        print(id)
+        print(produto)
+        print(destaque)
+        print(promocao)
+        print(msgPromocao)
+        try:
+            obj_produto = Produto.objects.filter(id=id).first()
+            obj_produto.Produto = produto
+            obj_produto.destaque = (destaque is not None)
+            obj_produto.promocao = (promocao is not None)
+            if msgPromocao is not None:
+                obj_produto.msgPromocao = msgPromocao
+            obj_produto.save()
+            print("Produto %s salvo com sucesso" % produto)
+        except Exception as e:
+            print("Erro salvando edição de produto: %s" % e)
+    return redirect("/produto")
+
 def list_produto_view(request, id=None):
     produto = request.GET.get("produto")
     destaque = request.GET.get("destaque")
@@ -41,32 +67,6 @@ def list_produto_view(request, id=None):
     context = {'produtos': produtos}
     return render(request, template_name='produto/produto.html', context=context, status=200)
 
-def edit_produto_postback(request, id=None):
-    if request.method == 'POST':
-        id = request.POST.get("id")
-        produto = request.POST.get("Produto")
-        destaque = request.POST.get("destaque")
-        promocao = request.POST.get("promocao")
-        msgPromocao = request.POST.get("msgPromocao")
-        print("postback")
-        print(id)
-        print(produto)
-        print(destaque)
-        print(promocao)
-        print(msgPromocao)
-        try:
-            obj_produto = Produto.objects.filter(id=id).first()
-            obj_produto.Produto = produto
-            obj_produto.destaque = (destaque is not None)
-            obj_produto.promocao = (promocao is not None)
-            if msgPromocao is not None:
-                obj_produto.msgPromocao = msgPromocao
-            obj_produto.save()
-            print("Produto %s salvo com sucesso" % produto)
-        except Exception as e:
-            print("Erro salvando edição de produto: %s" % e)
-    return redirect("/produto")
-
 def details_produto_view(request, id=None):
     produtos = Produto.objects.all()
     if id is not None:
@@ -75,6 +75,31 @@ def details_produto_view(request, id=None):
     print(produto)
     context = {'produto': produto}
     return render(request, template_name='produto/produto-details.html', context=context,status=200)
+
+def delete_produto_view(request, id=None):
+    produtos = Produto.objects.all()
+    if id is not None:
+        produtos = produtos.filter(id=id)
+    produto = produtos.first()
+    print(produto)
+    context = {'produto': produto}
+    return render(request, template_name='produto/produto-delete.html', context=context, status=200)
+
+def delete_produto_postback(request, id=None):
+    if request.method == 'POST':
+        id = request.POST.get("id")
+        produto = request.POST.get("Produto")
+        print("postback-delete")
+        print(id)
+        try:
+            Produto.objects.filter(id=id).delete()
+            print("Produto %s excluido com sucesso" % produto)
+        except Exception as e:
+            print("Erro salvando edição de produto: %s" % e)
+        return redirect("/produto")
+
+def create_produto_view(request, id=None):
+    return render(request, template_name='produto/produto-create.html',status=200)
 
 #cd loja
 #Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser

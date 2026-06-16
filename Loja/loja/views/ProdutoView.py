@@ -24,12 +24,16 @@ def edit_produto_postback(request, id=None):
         msgPromocao = request.POST.get("msgPromocao")
         categoria = request.POST.get("CategoriaFk")
         fabricante = request.POST.get("FabricanteFk")
+        image = request.FILES.get("ImagemFk")
         print("postback")
         print(id)
         print(produto)
         print(destaque)
         print(promocao)
         print(msgPromocao)
+        print(categoria)
+        print(fabricante)
+        print(image)
         try:
             obj_produto = Produto.objects.filter(id=id).first()
             obj_produto.Produto = produto
@@ -37,6 +41,10 @@ def edit_produto_postback(request, id=None):
             obj_produto.promocao = (promocao is not None)
             obj_produto.fabricante = Fabricante.objects.filter(id=fabricante).first()
             obj_produto.categoria = Categoria.objects.filter(id=categoria).first()
+            if image:
+                if obj_produto.image:
+                    obj_produto.image.delete(save=False)
+                obj_produto.image = image
             if msgPromocao is not None:
                 obj_produto.msgPromocao = msgPromocao
             obj_produto.save()
@@ -95,15 +103,18 @@ def delete_produto_view(request, id=None):
 def delete_produto_postback(request, id=None):
     if request.method == 'POST':
         id = request.POST.get("id")
-        produto = request.POST.get("Produto")
         print("postback-delete")
         print(id)
         try:
-            Produto.objects.filter(id=id).delete()
-            print("Produto %s excluido com sucesso" % produto)
+            obj_produto = Produto.objects.filter(id=id).first()
+            if obj_produto:
+                if obj_produto.image:
+                    obj_produto.image.delete(save=False)
+                obj_produto.delete()
+                print(f"Produto {obj_produto.Produto} excluído com sucesso")
         except Exception as e:
-            print("Erro salvando edição de produto: %s" % e)
-        return redirect("/produto")
+            print("Erro excluindo produto:", e)
+    return redirect("/produto")
 
 def create_produto_view(request, id=None):
     if request.method == 'POST':
@@ -112,7 +123,7 @@ def create_produto_view(request, id=None):
         promocao = request.POST.get("promocao")
         msgPromocao = request.POST.get("msgPromocao")
         preco = request.POST.get("preco")
-        image = request.POST.get("image")
+        image = request.FILES.get("image")
         print("postback-create")
         print(produto)
         print(destaque)

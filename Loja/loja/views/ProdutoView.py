@@ -24,7 +24,7 @@ def edit_produto_postback(request, id=None):
         msgPromocao = request.POST.get("msgPromocao")
         categoria = request.POST.get("CategoriaFk")
         fabricante = request.POST.get("FabricanteFk")
-        image = request.FILES.get("ImagemFk")
+        image = request.FILES.get("image")
         print("postback")
         print(id)
         print(produto)
@@ -84,20 +84,24 @@ def list_produto_view(request, id=None):
 
 def details_produto_view(request, id=None):
     produtos = Produto.objects.all()
+    categorias = Categoria.objects.all()
+    fabricantes = Fabricante.objects.all()
     if id is not None:
         produtos = produtos.filter(id=id)
     produto = produtos.first()
     print(produto)
-    context = {'produto': produto}
-    return render(request, template_name='produto/produto-details.html', context=context,status=200)
+    context = {'produto': produto, 'fabricantes': fabricantes, 'categorias': categorias}
+    return render(request, template_name='produto/produto-details.html', context=context, status=200)
 
 def delete_produto_view(request, id=None):
     produtos = Produto.objects.all()
+    categorias = Categoria.objects.all()
+    fabricantes = Fabricante.objects.all()
     if id is not None:
         produtos = produtos.filter(id=id)
     produto = produtos.first()
     print(produto)
-    context = {'produto': produto}
+    context = {'produto': produto, 'categorias': categorias, 'fabricantes': fabricantes}
     return render(request, template_name='produto/produto-delete.html', context=context, status=200)
 
 def delete_produto_postback(request, id=None):
@@ -117,11 +121,15 @@ def delete_produto_postback(request, id=None):
     return redirect("/produto")
 
 def create_produto_view(request, id=None):
+    categorias = Categoria.objects.all()
+    fabricantes = Fabricante.objects.all()
     if request.method == 'POST':
         produto = request.POST.get("Produto")
         destaque = request.POST.get("destaque")
         promocao = request.POST.get("promocao")
         msgPromocao = request.POST.get("msgPromocao")
+        categoria = request.POST.get("CategoriaFk")
+        fabricante = request.POST.get("FabricanteFk")
         preco = request.POST.get("preco")
         image = request.FILES.get("image")
         print("postback-create")
@@ -130,6 +138,8 @@ def create_produto_view(request, id=None):
         print(promocao)
         print(msgPromocao)
         print(preco)
+        print(categoria)
+        print(fabricante)
         print(image)
         try:
             obj_produto = Produto()
@@ -143,22 +153,29 @@ def create_produto_view(request, id=None):
                 obj_produto.preco = preco
             obj_produto.criado_em = timezone.now()
             obj_produto.alterado_em = obj_produto.criado_em
+            if categoria and categoria != "-1":
+                obj_produto.categoria = Categoria.objects.filter(id=int(categoria)).first()
+            else:
+                obj_produto.categoria = None
+            if fabricante and fabricante != "-1":
+                obj_produto.fabricante = Fabricante.objects.filter(id=int(fabricante)).first()
+            else:
+                obj_produto.fabricante = None
             # Se for anexado arquivo, salva na pasta e guarda nome no objeto
             if request.FILES is not None:
                 num_files = len(request.FILES.getlist('image'))
                 if num_files > 0:
                     imagefile = request.FILES['image']
                     print(imagefile)
-                    fs = FileSystemStorage()
-                    filename = fs.save(imagefile.name, imagefile)
-                    if (filename is not None) and (filename != ""):
-                        obj_produto.image = filename
+                    if image:
+                        obj_produto.image = image
             obj_produto.save()
             print("Produto %s salvo com sucesso" % produto)
         except Exception as e:
             print("Erro inserindo produto: %s" % e)
         return redirect("/produto")
-    return render(request, template_name='produto/produto-create.html',status=200)
+    context = {'categorias': categorias, 'fabricantes': fabricantes}
+    return render(request, template_name='produto/produto-create.html', context=context, status=200)
 
 #cd loja
 #Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser

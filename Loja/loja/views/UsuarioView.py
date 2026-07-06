@@ -9,7 +9,19 @@ def list_usuario_view(request, id=None):
     return render(request, template_name='usuario/usuario.html', context=context, status=200)
 def edit_usuario_view(request):
     usuario = get_object_or_404(Usuario, user=request.user)
-    usuarioForm = UserUsuarioForm(instance=usuario)
-    userForm = UserForm(instance=request.user)
+    emailUnused = True
+    if request.method == 'POST':
+        usuarioForm = UserUsuarioForm(request.POST, instance=usuario)
+        userForm = UserForm(request.POST, instance=request.user)
+        # Verifica se o e-mail que o usuário está tentando utilizar
+        # em seu perfil já existe em outro perfil
+        verifyEmail = Usuario.objects.filter(user__email=request.POST['email']).exclude(user__id=request.user.id).first()
+        emailUnused = verifyEmail is None
+    else:
+        usuarioForm = UserUsuarioForm(instance=usuario)
+        userForm = UserForm(instance=request.user)
+    if usuarioForm.is_valid() and userForm.is_valid() and emailUnused:
+        usuarioForm.save()
+        userForm.save()
     context = {'usuarioForm': usuarioForm, 'userForm': userForm}
     return render(request, template_name='usuario/usuario-edit.html', context=context, status=200)

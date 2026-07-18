@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from loja.models import Categoria
+from django.utils import timezone
 
 def create_categoria_view(request):
     if request.method == "POST":
@@ -63,7 +64,6 @@ def delete_categoria_postback(request, id=None):
     if request.method == 'POST':
         id = request.POST.get("id")
         print("postback-delete")
-        print(id)
         try:
             obj_categoria = Categoria.objects.filter(id=id).first()
             if obj_categoria:
@@ -79,5 +79,5 @@ def details_categoria_view(request, id=None):
         categorias = categorias.filter(id=id)
     categoria = categorias.first()
     print(categoria)
-    context = {"categorias": categorias}
+    context = {"categoria": categoria}
     return render(request, "categoria/categoria-details.html", context=context, status=200)

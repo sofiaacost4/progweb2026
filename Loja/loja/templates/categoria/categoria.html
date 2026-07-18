@@ -14,9 +14,9 @@
         {% for categoria in categorias %}
         <div class="row">
             <h5 class="col-md-2">{{categoria.Categoria}}</h5>
-            <a href={% url 'details_categoria' categoria.id %} class="btn btn-primary mb-2 mr-2"><i class="fa fa-search"></i> Ver</a>
-            <a href={% url 'edit_categoria' categoria.id %} class= "btn bg-secondary mb-2 mr-2"><i class="fa fa-edit"></i> Editar</a>
-            <a href={% url 'delete_categoria' categoria.id %} class= "btn btn-warning mb-2"><i class="fa fa-trash"></i> Apagar</a>
+            <a href={% url 'details_categoria' categoria.id %} class="btn btn-primary mb-3 mr-2"><i class="fa fa-search"></i> Ver</a>
+            <a href={% url 'edit_categoria' categoria.id %} class= "btn bg-secondary mb-3 mr-2"><i class="fa fa-edit"></i> Editar</a>
+            <a href={% url 'delete_categoria' categoria.id %} class= "btn btn-warning mb-3"><i class="fa fa-trash"></i> Apagar</a>
         </div>
         {% endfor %}
     </div>

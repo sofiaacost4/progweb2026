@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Fabricante{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+{% block content %}
+<div id="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 col-lg-4 offset-md-3 offset-lg-4">
+                <div class="card">
+                    <div class="card-header bg-danger text-white">
+                        Excluir Fabricante
+                    </div>
+                    <div class="card-body">
+                        <p>Tem certeza que deseja excluir o fabricante <strong>{{ fabricante.Fabricante }}</strong>?</p>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i>Excluir</button>
+                            <a href="{% url 'fabricante' %}" class="btn bg-secondary mb-3 mr-2"><i class="fa fa-rotate-left"></i>Voltar</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

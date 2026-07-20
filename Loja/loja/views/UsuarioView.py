@@ -8,6 +8,7 @@ def list_usuario_view(request, id=None):
 def edit_usuario_view(request):
     usuario = get_object_or_404(Usuario, user=request.user)
     emailUnused = True
+    message = None
     if request.method == 'POST':
         usuarioForm = UserUsuarioForm(request.POST, instance=usuario)
         userForm = UserForm(request.POST, instance=request.user)
@@ -21,5 +22,12 @@ def edit_usuario_view(request):
     if usuarioForm.is_valid() and userForm.is_valid() and emailUnused:
         usuarioForm.save()
         userForm.save()
-    context = {'usuarioForm': usuarioForm, 'userForm': userForm}
+        message = { 'type': 'success', 'text': 'Dados atualizados com sucesso' }
+    else:
+        if request.method == 'POST':
+            if emailUnused:
+                message = {'type': 'danger', 'text': 'Dados inválidos'}
+            else:
+                message = {'type': 'warning', 'text': 'E-mail já utilizado'}
+    context = {'usuarioForm': usuarioForm, 'userForm': userForm, 'message': message}
     return render(request, template_name='usuario/usuario-edit.html', context=context, status=200)

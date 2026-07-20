@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Fabricante{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+{% block content %}
+<div id="content">
+    <div class="container-fluid">
+        <div class="row">
+            <form class="col-md-6 col-lg-4 offset-md-3 offset-lg-4" method="POST" action="">
+                {% csrf_token %}
+                <div class="row">
+                    {% for f in form %}
+                        {% if not f.is_hidden %}
+                            <div class="form-group col-md-12">
+                                <label for="{{ f.id_for_label }}">
+                                    {{ f.label }}
+                                </label>
+                                {{ f }}
+                                {% for error in f.errors %}
+                                    <div class="invalid-feedback" style="display:block;">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ f }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a href="{% url 'fabricante' %}" class="btn bg-secondary mb-3 mr-2"><i class="fa fa-rotate-left"></i>Voltar</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

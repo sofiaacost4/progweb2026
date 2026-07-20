@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from loja.models.Usuario import Usuario
 from django.contrib.auth.models import User
+
 class UserUsuarioForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserUsuarioForm, self).__init__(*args, **kwargs)

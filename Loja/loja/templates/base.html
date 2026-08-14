@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Adicione as linhas a seguir -->
     {% block styles %}{% endblock %}
     <title>Loja - {% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -20,9 +19,9 @@
                 <li class="nav-item"><a class="nav-link" href="/fabricante"><i class="fa fa-book"></i> Fabricante</a></li>
                 <li class="nav-item"><a class="nav-link" href="/produto"><i class="fa fa-book"></i> Produto</a></li>
                 <li class="nav-item"><a class="nav-link" href="/usuario"><i class="fa fa-book"></i> Usuário</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-sign-in"></i> Entrar</a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-edit"></i> Registrar</a></li>
-        </ul>
+                <li class="nav-item"><a class="nav-link" href="/login"><i class="fa fa-sign-in"></i> Entrar</a></li>
+                <li class="nav-item"><a class="nav-link" href="/register"><i class="fa fa-edit"></i> Registrar</a></li>
+            </ul>
         </nav>
     </header>
     {% block content %}{% endblock %}

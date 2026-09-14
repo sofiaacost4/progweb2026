@@ -20,6 +20,11 @@
             <a class="col-md-2"> {{ item.quantidade }}</a>
             <a class="col-md-2">R$ {{ item.preco|floatformat:2 }}</a>
             <a class="col-md-2">R$ {{ item.total }}</a>
+            <a class="col-md-2"> 
+                <form method="POST" action="{% url 'remover_carrinhoitem' item.id %}" style="display:inline;"> {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                </form>
+            </a>
         </div>
     {% endfor %}
     <h5 class="mt-4">Total: R$ {{ carrinho.total|floatformat:2 }}</h3>

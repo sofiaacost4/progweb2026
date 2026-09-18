@@ -7,3 +7,10 @@ body{
 #content form button{
     width: 100%;
 }
+.botoes{
+    gap: 0.2rem;
+}
+.botoes a{
+    min-width: 100%;
+    margin-top: 0.2rem;
+}

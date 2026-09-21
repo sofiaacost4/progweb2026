@@ -9,7 +9,7 @@
 <div id="content">
     <div class="container">
         <div class="alert alert-info">
-            <i class="fa fa-heart"></i>
+            <i class="fa fa-star"></i>
             Meus produtos favoritos
             [{{ produtos|length }}]
         </div>
@@ -17,7 +17,7 @@
         <div class="row align-items-center mb-3">
             {% if prod.image %}
             <div class="col-md-2">
-                <img src="{{ prod.image.url }}" alt="{{ prod.Produto }}" class="img-fluid" style="max-height: 100px;">
+                <img src="{{ prod.image.url }}" alt="{{ prod.Produto }}" class="img-fluid" id="imagem-fav">
             </div>
             {% endif %}
             <div class="col-md-3">
@@ -39,7 +39,7 @@
         </div>
         {% empty %}
         <div class="alert alert-warning">
-            <i class="fa fa-heart-o"></i>
+            <i class="fa fa-star"></i>
             Você ainda não possui produtos favoritos.
         </div>
         {% endfor %}

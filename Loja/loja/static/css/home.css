@@ -24,3 +24,6 @@ body{
 .lista-itens{
     font-weight: 600;
 }
+#imagem-fav{
+    width: 140px;
+}

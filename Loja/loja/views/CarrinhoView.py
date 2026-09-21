@@ -73,6 +73,7 @@ def list_carrinho_view(request):
 @login_required
 def confirmar_carrinho_view(request):
     print ('confirmar_carrinho_view')
+    itens = []
     carrinho = None
     # Tenta pegar o carrinho da sessão ou cria um novo carrinho
     carrinho_id = request.session.get('carrinho_id')
@@ -80,6 +81,7 @@ def confirmar_carrinho_view(request):
         print ('carrinho: ' + str(carrinho_id))
         # Obtém o carrinho do usuário
         carrinho = Carrinho.objects.filter(id=carrinho_id).first()
+        itens = CarrinhoItem.objects.filter(carrinho_id=carrinho_id)
         # Obtém o usuário
         usuario = get_object_or_404(Usuario, user=request.user)
         print ('Usuario: ' + str(usuario))
@@ -88,11 +90,15 @@ def confirmar_carrinho_view(request):
             carrinho.situacao = 1
             carrinho.confirmado_em = timezone.make_aware(datetime.today())
             carrinho.save()
-            print ('carrinho salvo')
+        for item in itens:
+            item.situacao = 1
+            item.save()
+        print ('carrinho salvo')
     context = {
-        'carrinho': carrinho
+        'carrinho': carrinho, 'itens': itens
     }
     return render(request, 'carrinho/carrinho-confirmado.html', context=context)
+
 def remover_item_view(request, item_id):
     item = get_object_or_404(CarrinhoItem, id=item_id)
     # Verifica se o item pertence ao carrinho do usuário (opcional)
@@ -100,3 +106,16 @@ def remover_item_view(request, item_id):
     if carrinho_id == item.carrinho.id:
         item.delete()
     return redirect('/carrinho')
+
+def alterar_quantidade_view(request, item_id, acao):
+    item = get_object_or_404(CarrinhoItem, id=item_id)
+    carrinho_id = request.session.get('carrinho_id')
+    if int(carrinho_id) == item.carrinho.id:
+        if acao == 'aumentar':
+            item.quantidade += 1
+        elif acao == 'diminuir' and item.quantidade > 1:
+            item.quantidade -= 1
+        item.save()
+    return redirect('/carrinho')
+        
+    

@@ -20,9 +20,9 @@
     {% for item in itens %}
         <div class="row">
             <a class="col-md-4"> {{ item.produto.Produto }}</a>
-            <button id="btn-menos">-</button>
+            <a href="{% url 'alterar_quantidadeitem' item.id 'diminuir' %}" id="btn-menos">-</a>
                 <a class="quantidade"> {{ item.quantidade }}</a>
-            <button id="btn-mais">+</button>
+            <a href="{% url 'alterar_quantidadeitem' item.id 'aumentar' %}" id="btn-mais">+</a>
             <a class="col-md-2">R$ {{ item.preco|floatformat:2 }}</a>
             <a class="col-md-2">R$ {{ item.total }}</a>
             <a class="col-md-2"> 
@@ -45,10 +45,3 @@
 {% endif %}
 </div></div>
 {% endblock %}
-<script>
-    const botaomenos = document.getElementById("btn-menos");
-    const botaomais = document.getElementById("btn-mais");
-    function somar(valorAtual, x){
-        
-    }
-</script>

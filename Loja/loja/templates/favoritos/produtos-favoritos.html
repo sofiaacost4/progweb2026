@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Meus Favoritos{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="container">
+        <div class="alert alert-info">
+            <i class="fa fa-heart"></i>
+            Meus produtos favoritos
+            [{{ produtos|length }}]
+        </div>
+        {% for prod in produtos %}
+        <div class="row align-items-center mb-3">
+            {% if prod.image %}
+            <div class="col-md-2">
+                <img src="{{ prod.image.url }}" alt="{{ prod.Produto }}" class="img-fluid" style="max-height: 100px;">
+            </div>
+            {% endif %}
+            <div class="col-md-3">
+                <h5>{{ prod.Produto }}</h5>
+            </div>
+            <div class="col-md-2">
+                <span>R$ {{ prod.preco }}</span>
+            </div>
+            <div class="col-md-5">
+                <a href="{% url 'create_carrinhoitem' prod.id %}" class="btn btn-primary mb-2 mr-2">
+                    <i class="fa fa-shopping-cart"></i>
+                    Comprar
+                </a>
+                <a href="{% url 'details_produto' prod.id %}" class="btn btn-primary mb-2 mr-2">
+                    <i class="fa fa-search"></i>
+                    Ver
+                </a>
+            </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-warning">
+            <i class="fa fa-heart-o"></i>
+            Você ainda não possui produtos favoritos.
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

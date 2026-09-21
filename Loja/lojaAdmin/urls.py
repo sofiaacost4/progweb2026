@@ -29,4 +29,5 @@ urlpatterns = [
     path('fabricante/', include('loja.urls.FabricanteUrls')),
     path('usuario/', include('loja.urls.UsuarioUrls')),
     path('carrinho/', include('loja.urls.CarrinhoUrls')),
+    path('favoritos/', include('loja.urls.FavoritosUrls')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

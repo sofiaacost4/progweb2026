@@ -14,3 +14,13 @@ body{
     min-width: 100%;
     margin-top: 0.2rem;
 }
+#btn-menos, #btn-mais{
+    background: none;
+    border: none;
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+}
+.lista-itens{
+    font-weight: 600;
+}
